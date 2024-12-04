@@ -1,16 +1,22 @@
-# This is a sample Python script.
+import requests
+import allure
+import pytest
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+@allure.feature('API Tests')
+@allure.story('Test API Response')
+@allure.title("Verify API returns status 200 and response 'ok'")
+def test_api_response():
+    # Define the API endpoint
+    url = "http://example.com/api"  # Replace with your actual API endpoint
 
+    # Send a GET request with the parameter
+    response = requests.get(url, params={'value1': 'testvalue'})
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    # Check if the status code is 200
+    assert response.status_code == 200, f"Expected status code 200 but got {response.status_code}"
 
+    # Check if the returned value is 'ok'
+    json_response = response.json()  # Assuming the response is in JSON format
+    assert json_response.get('value') == 'ok', f"Expected 'ok' but got {json_response.get('value')}"
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+test_api_response()
